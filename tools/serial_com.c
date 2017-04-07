@@ -43,7 +43,7 @@ BOOL ConnectToCom(char *comPortName) {
 	return TRUE;
 }
 
-BOOL WriteToCom(U8 bytesToWrite[], U8 numberOfBytes) {
+BOOL WriteToCom(char bytesToWrite[], U8 numberOfBytes) {
 	DWORD bytesWritten = 0U;
 
 	if (WriteFile(comPort, ((void*)bytesToWrite), (DWORD)numberOfBytes, &bytesWritten, NULL)) {
@@ -57,7 +57,7 @@ BOOL WriteToCom(U8 bytesToWrite[], U8 numberOfBytes) {
 	return TRUE;
 }
 
-BOOL ReadFromCom(U8 buffer[], U8 numberOfBytesToRead) {
+BOOL ReadFromCom(char buffer[], U8 numberOfBytesToRead) {
 	DWORD bytesRead = 0;
 
 	if (ReadFile(comPort, ((void*)buffer), (DWORD)numberOfBytesToRead, &bytesRead, NULL)) {
@@ -91,8 +91,8 @@ int main (int argc, char **argv) {
 	messageLength = strlen(message);
 
 	if (ConnectToCom(comPortName)) {
-		if (WriteToCom((U8*)message, messageLength)) {
-			if(ReadFromCom((U8*)response, messageLength)) {
+		if (WriteToCom(message, messageLength)) {
+			if(ReadFromCom(response, messageLength)) {
 				return 0;
 			}
 			else {
