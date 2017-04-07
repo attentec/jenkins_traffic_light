@@ -1,4 +1,4 @@
-from jenkins_get_last_completed_build_status import get_jenkins_last_build
+from jenkins_get_last_completed_build_status import get_jenkins_build_info, SERVER_URL, JOB_NAME
 import pprint
 import datetime
 
@@ -14,6 +14,6 @@ def get_build_progress(build):
 	return min(progress, 100)
 
 if __name__ == "__main__":
-	ServerUrl='http://ci.attentec.se'
-	JobName = 'Hacka-Traffic-Light'
-	pprint.pprint(get_build_progress(get_jenkins_last_build(ServerUrl, JobName)))
+	jenkins = Jenkins(SERVER_URL)
+
+	pprint.pprint(get_build_progress(get_jenkins_build_info(jenkins, JOB_NAME, "lastBuild")))
