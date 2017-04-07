@@ -1,0 +1,3 @@
+Hack away!
+
+Licence: MIT
