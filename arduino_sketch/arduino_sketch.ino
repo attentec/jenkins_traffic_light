@@ -4,7 +4,7 @@
 
 void setup() {
   // put your setup code here, to run once:
-  Serial.begin(9600);
+  Serial.begin(115200);
   pinMode(R_DIODE, OUTPUT);
   pinMode(Y_DIODE, OUTPUT);
   pinMode(G_DIODE, OUTPUT);
