@@ -1,0 +1,18 @@
+#ifndef DECLARATION_WORKAROUND_H
+#define DECLARATION_WORKAROUND_H
+
+enum Command: uint8_t {
+  COMMAND_NEW_BUILD = 0,
+  COMMAND_PROGRESS,
+  COMMAND_MODE,
+  COMMAND_BUILD_DONE,
+};
+
+enum Status: uint8_t {
+  STATUS_UNKNOWN = 0,
+  STATUS_OK,
+  STATUS_IFFY,
+  STATUS_FAILURE,
+};
+
+#endif
