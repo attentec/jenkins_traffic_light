@@ -7,15 +7,15 @@ typedef unsigned char U8;
 HANDLE comPort;
 
 BOOL ConnectToCom(char *comPortName) {
-	DCB dcbStr;
+	DCB dcbStr = {0};
 
 	comPort = CreateFile(comPortName,  
                     GENERIC_READ | GENERIC_WRITE, 
                     0, 
-                    0, 
+                    NULL, 
                     OPEN_EXISTING,
-                    0,
-                    0);
+                    FILE_ATTRIBUTE_NORMAL,
+                    NULL);
 
 	if (comPort == INVALID_HANDLE_VALUE) {
 		printf("Could not open port: %s\n", comPortName);
@@ -30,11 +30,13 @@ BOOL ConnectToCom(char *comPortName) {
 	dcbStr.BaudRate = CBR_115200;
 	dcbStr.DCBlength = sizeof(dcbStr);
 	dcbStr.ByteSize = 8;
+	dcbStr.fDtrControl = DTR_CONTROL_DISABLE;
 
 	if (!SetCommState(comPort, &dcbStr)) {
 		printf("SetCommState failed\n");
 		return FALSE;
 	}
+	PurgeComm(comPort, PURGE_RXCLEAR | PURGE_TXCLEAR);
 
 	return TRUE;
 }
@@ -88,7 +90,7 @@ int main (int argc, char **argv) {
 
 	if (ConnectToCom(comPortName)) {
 		if (WriteToCom(message, messageLength)) {
-			if(ReadFromCom(response, messageLength)) {
+			if(ReadFromCom(response, 1U)) {
 				return 0;
 			}
 			else {
