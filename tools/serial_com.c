@@ -3,10 +3,6 @@
 #include "string.h"
 
 typedef unsigned char U8;
-/*typedef enum {
-	FALSE,
-	TRUE
-} BOOL;*/
 
 HANDLE comPort;
 
