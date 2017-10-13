@@ -58,15 +58,13 @@ def worker(q):
 	blankLed = 0
 	while True:
 		try:
-			item = q.get(timeout=0.5)
+			item = q.get(timeout=0.02)
 			if item[0] == "percent":
 				ledsLighted = int(30 * (int(item[1]) / 100))
 			elif item == "kill":
-				sys.exit()
+				return
 		except Empty as e:
 			pass
-
-
 
 		for led in range(30):
 			if led <= ledsLighted:
