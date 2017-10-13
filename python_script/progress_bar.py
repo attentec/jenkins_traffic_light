@@ -74,7 +74,7 @@ def worker(q):
 				p["led" + str(led)] = "000000"
 
 		blankLed = min((blankLed+1)%(ledsLighted+1), 29)
-		p["led"+str(blankLed)] = "000000"
+		p["led"+str(blankLed)] = "11AA33"
 
 		try:
 			updateLeds(p)
