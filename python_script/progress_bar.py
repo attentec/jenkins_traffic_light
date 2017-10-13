@@ -56,6 +56,7 @@ def worker(q):
 	ledsLighted = 0
 	p = {"quiet": "1"}
 	blankLed = 0
+
 	while True:
 		try:
 			item = q.get(timeout=0.5)
@@ -77,4 +78,7 @@ def worker(q):
 		blankLed = min((blankLed+1)%(ledsLighted+1), 29)
 		p["led"+str(blankLed)] = "000000"
 
-		updateLeds(p)
+		try:
+			updateLeds(p)
+		except:
+			pass
