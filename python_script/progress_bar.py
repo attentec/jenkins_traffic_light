@@ -27,3 +27,21 @@ def setProgress(percent):
 		else:
 			payload["led" + str(led)] = "000000"
 	updateLeds(payload)
+
+def setLedsSuccess():
+	payload = {"quiet": "1"}
+	for led in range(30):
+		payload["led" + str(led)] = "00FF00"
+	updateLeds(payload)
+
+def setLedsFail():
+	payload = {"quiet": "1"}
+	for led in range(30):
+		payload["led" + str(led)] = "FF0000"
+	updateLeds(payload)
+
+def setLedsUnstable():
+	payload = {"quiet": "1"}
+	for led in range(30):
+		payload["led" + str(led)] = "FFFF00"
+	updateLeds(payload)
