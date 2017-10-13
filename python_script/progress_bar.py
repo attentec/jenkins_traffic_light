@@ -3,7 +3,7 @@ import random
 import time
 from threading import Thread
 from queue import Queue, Empty
-import sys
+
 q = Queue()
 t = None
 def genRandomPayload(payload):
@@ -72,7 +72,7 @@ def worker(q):
 			else:
 				p["led" + str(led)] = "000000"
 
-		blankLed = (blankLed+1)%ledsLighted
+		blankLed = min((blankLed+1)%(ledsLighted+1), 29)
 		p["led"+str(blankLed)] = "000000"
 
 		updateLeds(p)
