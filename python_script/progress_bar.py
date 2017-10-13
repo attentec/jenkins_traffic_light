@@ -1,6 +1,10 @@
 import requests
 import random
 import time
+from threading import Thread
+from queue import Queue, Empty
+
+q = Queue()
 
 def genRandomPayload(payload):
 	for led in range(30):
@@ -12,6 +16,13 @@ def updateLeds(payload):
 	except  requests.exceptions.Timeout as e:
 		pass
 
+def startUpThread():
+	t = Thread(target=worker, args=(q,))
+	t.start()
+
+def killThread():
+	q.put(("kill"))
+
 def turnOfAllLeds():
 	payload = {"quiet": "1"}
 	for led in range(30):
@@ -19,14 +30,7 @@ def turnOfAllLeds():
 	updateLeds(payload)
 
 def setProgress(percent):
-	payload = {"quiet": "1"}
-	ledsLighted = int(30 * (percent / 100))
-	for led in range(30):
-		if led <= ledsLighted:
-			payload["led" + str(led)] = "0000FF"
-		else:
-			payload["led" + str(led)] = "000000"
-	updateLeds(payload)
+	q.put(("percent", percent))
 
 def setLedsSuccess():
 	payload = {"quiet": "1"}
@@ -45,3 +49,33 @@ def setLedsUnstable():
 	for led in range(30):
 		payload["led" + str(led)] = "FFFF00"
 	updateLeds(payload)
+
+def worker(q):
+	ledsLighted = 0
+	p = {"quiet": "1"}
+	blinkingLedOn = True
+	while True:
+		try:
+			item = q.get(timeout=0.5)
+			if item[0] == "percent":
+				ledsLighted = int(30 * (int(item[1]) / 100))
+			elif item[1] == "kill":
+				return
+		except Empty as e:
+			pass
+
+		blinkingLed = ledsLighted + 1
+		for led in range(30):
+			if led <= ledsLighted:
+				p["led" + str(led)] = "0000FF"
+			else:
+				p["led" + str(led)] = "000000"
+
+		if blinkingLedOn:
+			p["led" + str(blinkingLed)] = "000000"
+			blinkingLedOn = False
+		else:
+			p["led" + str(blinkingLed)] = "0000FF"
+			blinkingLedOn = True
+
+		updateLeds(p)
