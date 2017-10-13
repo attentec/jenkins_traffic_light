@@ -13,8 +13,7 @@ def updateLeds(payload):
 		pass
 
 def turnOfAllLeds():
-	global payload
-	payload["quiet"] = "1"
+	payload = {"quiet": "1"}
 	for led in range(30):
 		payload["led" + str(led)] = "000000"
 	updateLeds(payload)
