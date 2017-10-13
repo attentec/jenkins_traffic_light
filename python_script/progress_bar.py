@@ -2,7 +2,7 @@ import requests
 import random
 import time
 
-def genRandomPayload():
+def genRandomPayload(payload):
 	for led in range(30):
 		payload["led" + str(led)] = hex(random.randint(0,255))[2:].upper() + hex(random.randint(0,127))[2:].upper() + hex(random.randint(0,63))[2:].upper()
 
@@ -20,7 +20,7 @@ def turnOfAllLeds():
 	updateLeds(payload)
 
 def setProgress(percent):
-	payload = {}
+	payload = {"quiet": "1"}
 	ledsLighted = int(30 * (percent / 100))
 	for led in range(30):
 		if led <= ledsLighted:
