@@ -1,9 +1,13 @@
 from jenkins_get_last_completed_build_status import get_jenkins_build_info, SERVER_URL, JOB_NAME
+from jenkins import Jenkins
 import pprint
 import datetime
 
 
 def get_build_progress(build):
+	if not build["building"]:
+		return 100
+
 	estimated_duration = build["estimatedDuration"] / 1000
 	build_timestamp = build["timestamp"] / 1000 - 1
 	current_time = datetime.datetime.timestamp(datetime.datetime.now())
